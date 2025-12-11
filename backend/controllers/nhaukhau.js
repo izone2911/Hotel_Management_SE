@@ -107,4 +107,73 @@ export const deleteNhanKhau = (req,res) => {
             }
         }
     )
+} 
+
+export const getdetail = (req,res) => {
+    const {id} = req.body;
+    let data = {};
+    let tamvang = '';
+    let khaitu = '';
+    db.query(
+        'SELECT * FROM nhankhau WHERE id = $1',
+        [parseInt(id)],
+        (error,results) => {
+            if(error) {
+                res.status(500).send(error.message)
+            } else {
+                data = results.rows[0];
+                
+                db.query(
+                    'SELECT * FROM tamvang WHERE idnguoitamvang = $1 AND ngayketthuc > now()',
+                    [id],
+                    (error,results)=>{
+                        if(error) {
+                            res.status(500).send(error.message)
+                        } else{
+                            if(results.rows.length===0)tamvang = '';
+                            else {
+                                let temp = results.rows[0];
+                                console.log(temp);
+                                let ngaybatdau = (new Date(temp.ngaybatdau));
+                                let ngayketthuc = (new Date(temp.ngayketthuc));
+                                console.log({ngaybatdau,ngayketthuc})
+                                let temp1 = `${ngaybatdau.getDate()}/${ngaybatdau.getMonth()}/${ngaybatdau.getFullYear()}`
+                               let  temp2 = `${ngayketthuc.getDate()}/${ngayketthuc.getMonth()}/${ngayketthuc.getFullYear()}`
+                                
+                                    tamvang+=`${data.hoten} tạm vắng từ ngày ${temp1} đến ngày ${temp2} do ${temp.nguyennhan}`
+                                
+                                
+                                
+                            }
+                            console.log(tamvang);
+                            db.query(
+                                'SELECT * FROM khaitu WHERE idnguoichet = $1 ',
+                                [id],
+                                (error,results)=>{
+                                    if(error) {
+                                        res.status(500).send(error.message)
+                                    } else{
+                                        if(results.rows.length===0)khaitu = '';
+                                        else {
+                                            let temp = results.rows[0];
+                                            console.log(temp);
+                                            let ngaychet = (new Date(temp.ngaychet));
+                                            let temp1 = `${ngaychet.getDate()}/${ngaychet.getMonth()}/${ngaychet.getFullYear()}`
+                                          khaitu+=`${data["hoten"]} mất ngày ${temp1}  do ${temp.nguyennhan}`
+                                            
+                                            
+                                            
+                                        }
+                                        console.log(khaitu );
+                                        res.json({data,khaitu,tamvang})
+                                    }
+                                    
+                                }
+                            )
+                        }
+                    }
+                )
+            }
+        }
+    )
 }
