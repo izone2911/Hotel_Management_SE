@@ -3,8 +3,8 @@ const { Client } = pkg;
 
 const db = new Client({
   user: 'huy',
-  host: 'database',
-  database: 'db',
+  host: 'localhost',
+  database: 'bluemoon_db',
   password: '2003',
   port: 5432,
 })
