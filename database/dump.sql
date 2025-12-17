@@ -72,6 +72,9 @@ CREATE TABLE "public"."nhankhau" (
     "noithuongtrutruoc" character varying(100),
     "quanhe" character varying(100) NOT NULL,
     "mahokhau" bigint NOT NULL,
+    "sdt" character varying(15),   
+    "email" character varying(100),
+    "vaitro" character varying(50),
     CONSTRAINT "nhankhau_pk" PRIMARY KEY ("id")
 )
 WITH (oids = false);
