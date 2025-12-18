@@ -217,3 +217,34 @@ CREATE VIEW "hokhau" AS SELECT hokhau.mahokhau,
   WHERE ((nhankhau.mahokhau = hokhau.mahokhau) AND ((nhankhau.quanhe)::text ~~ '%Chủ hộ%'::text));
 
 -- 2025-10-01 17:34:10 UTC
+
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO huy;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO huy;
+
+-- Cập nhật dữ liệu cho Hộ gia đình 1 (Chủ hộ: Nguyễn Văn A)
+UPDATE "public"."nhankhau" SET "email" = 'nguyenvana@gmail.com', "sdt" = '0901000001', "vaitro" = 'Tổ trưởng dân phố' WHERE "id" = 1;
+UPDATE "public"."nhankhau" SET "email" = 'tranthib@gmail.com', "sdt" = '0901000002', "vaitro" = 'Công dân' WHERE "id" = 2;
+UPDATE "public"."nhankhau" SET "email" = 'levanc@gmail.com', "sdt" = '0901000003', "vaitro" = 'Công dân' WHERE "id" = 3;
+UPDATE "public"."nhankhau" SET "email" = 'nguyenthid@gmail.com', "sdt" = '0901000004', "vaitro" = 'Công dân' WHERE "id" = 4;
+UPDATE "public"."nhankhau" SET "email" = 'tranthie@gmail.com', "sdt" = '0901000005', "vaitro" = 'Công dân' WHERE "id" = 5;
+UPDATE "public"."nhankhau" SET "email" = 'lethif@gmail.com', "sdt" = '0901000006', "vaitro" = 'Công dân' WHERE "id" = 6;
+
+-- Cập nhật dữ liệu cho Hộ gia đình 2 (Chủ hộ: Nguyễn Văn G)
+UPDATE "public"."nhankhau" SET "email" = 'nguyenvang@gmail.com', "sdt" = '0901000007', "vaitro" = 'Công dân' WHERE "id" = 7;
+UPDATE "public"."nhankhau" SET "email" = 'tranthih@gmail.com', "sdt" = '0901000008', "vaitro" = 'Công dân' WHERE "id" = 8;
+UPDATE "public"."nhankhau" SET "email" = 'levani@gmail.com', "sdt" = '0901000009', "vaitro" = 'Công dân' WHERE "id" = 9;
+
+-- Cập nhật dữ liệu cho Hộ gia đình 3 (Chủ hộ: Nguyễn Văn J)
+UPDATE "public"."nhankhau" SET "email" = 'nguyenvanj@gmail.com', "sdt" = '0901000010', "vaitro" = 'Bí thư chi bộ' WHERE "id" = 10;
+
+-- Cập nhật dữ liệu cho Hộ gia đình 4 (Chủ hộ: Trần Thị K)
+UPDATE "public"."nhankhau" SET "email" = 'tranthik@gmail.com', "sdt" = '0901000011', "vaitro" = 'Công dân' WHERE "id" = 11;
+UPDATE "public"."nhankhau" SET "email" = 'levanl@gmail.com', "sdt" = '0901000012', "vaitro" = 'Công dân' WHERE "id" = 12;
+UPDATE "public"."nhankhau" SET "email" = 'nguyenthim@gmail.com', "sdt" = '0901000013', "vaitro" = 'Công dân' WHERE "id" = 13;
+UPDATE "public"."nhankhau" SET "email" = 'tranthin@gmail.com', "sdt" = '0901000014', "vaitro" = 'Công dân' WHERE "id" = 14;
+UPDATE "public"."nhankhau" SET "email" = 'lethio@gmail.com', "sdt" = '0901000015', "vaitro" = 'Công dân' WHERE "id" = 15;
+
+-- Cập nhật dữ liệu cho Hộ gia đình 5 (Chủ hộ: Lê Văn C - Khác)
+UPDATE "public"."nhankhau" SET "email" = 'levanc_new@gmail.com', "sdt" = '0901000016', "vaitro" = 'Công dân' WHERE "id" = 16;
+
+SELECT setval('nhankhau_id_seq', (SELECT MAX(id) FROM nhankhau));
