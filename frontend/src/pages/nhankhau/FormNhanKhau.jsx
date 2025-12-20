@@ -117,6 +117,12 @@ const FormS = ({ data, close, setList,table }) => {
     hochieu: yup.string().nullable(),
     nghenghiep: yup.string().nullable(),
     noilamviec: yup.string().nullable(),
+    email: yup.string()
+      .email("Email không hợp lệ")
+      .nullable(), // Cho phép để trống nếu không bắt buộc
+    sdt: yup.string()
+      .matches(/^0\d{9}$/, "Số điện thoại phải bắt đầu bằng số 0 và có 10 chữ số")
+      .nullable(),
     cccd: yup.string().nullable()
     .matches(
         /^\d{12}$/,
@@ -475,6 +481,40 @@ const FormS = ({ data, close, setList,table }) => {
 
               </Form.Group>
           </Row>
+
+          {/* --- CÁC TRƯỜNG ĐƯỢC CHUYỂN LÊN TRƯỚC CCCD --- */}
+          <Row>
+            <Col>
+              <Form.Group className="position-relative mb-3">
+                <Form.Label>Số điện thoại</Form.Label>
+                <Form.Control name="sdt"
+                  type="text"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.sdt}
+                  isValid={touched.sdt && !errors.sdt}
+                  isInvalid={touched.sdt && !!errors.sdt}
+                />
+                <Form.Control.Feedback className="top-0 end-0" type="invalid" tooltip>{errors.sdt}</Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+
+            <Col>
+              <Form.Group className="position-relative mb-3">
+                <Form.Label>Email</Form.Label>
+                <Form.Control name="email"
+                  type="email"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.email}
+                  isValid={touched.email && !errors.email}
+                  isInvalid={touched.email && !!errors.email}
+                />
+                <Form.Control.Feedback className="top-0 end-0" type="invalid" tooltip>{errors.email}</Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+          </Row>
+          {/* ----------------------------------------------- */}
 
           <Row>
               <Form.Group className="position-relative mb-3">

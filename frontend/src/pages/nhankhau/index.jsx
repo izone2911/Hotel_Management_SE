@@ -40,6 +40,8 @@ const nhankhauInit = {
   hochieu: '',
   nghenghiep: '',
   noilamviec: '',
+  email: '',
+  sdt: '',
   cccd: '',
   ngaycap: '',
   noicap: '',

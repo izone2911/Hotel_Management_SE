@@ -134,7 +134,7 @@ const FormS = ({ data, close }) => {
               <Form.Control name="diachi"
                 type="text"
                 disabled
-                value={values.noisinh}
+                value={values.diachi} // Đã sửa lỗi hiển thị noisinh thành diachi
               />
             </Form.Group>
           </Row>
@@ -204,6 +204,28 @@ const FormS = ({ data, close }) => {
               />
             </Form.Group>
           </Row>
+
+          {/* --- BỔ SUNG EMAIL VÀ SDT (Trước CCCD) --- */}
+          <Row>
+            <Form.Group className="position-relative mb-3">
+              <Form.Label>Số điện thoại</Form.Label>
+              <Form.Control name="sdt"
+                type="text"
+                disabled
+                value={values.sdt || "Chưa cập nhật"}
+              />
+            </Form.Group>
+            <Form.Group className="position-relative mb-3">
+              <Form.Label>Email</Form.Label>
+              <Form.Control name="email"
+                type="text"
+                disabled
+                value={values.email || "Chưa cập nhật"}
+              />
+            </Form.Group>
+          </Row>
+          {/* --------------------------------------- */}
+
           <Row>
           <Form.Group className="position-relative mb-3">
               <Form.Label>Căn cước công dân</Form.Label>
