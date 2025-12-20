@@ -49,7 +49,7 @@ const FormS = ({ data, close }) => {
       >
       {({ handleChange, handleBlur, values, touched, errors }) => (
         <Form noValidate onSubmit={(e)=>close()} className="w-75 d-flex flex-column justify-content-center">
-             <Form.Group as='div' className="position-relative mb-5 cf-title-12">
+              <Form.Group as='div' className="position-relative mb-5 cf-title-12">
             <Form.Label className="w-100 text-center h1" >Chi tiết nhân khẩu</Form.Label>
           </Form.Group>
           
@@ -134,7 +134,7 @@ const FormS = ({ data, close }) => {
               <Form.Control name="diachi"
                 type="text"
                 disabled
-                value={values.diachi} // Đã sửa lỗi hiển thị noisinh thành diachi
+                value={values.diachi} 
               />
             </Form.Group>
           </Row>
@@ -205,7 +205,6 @@ const FormS = ({ data, close }) => {
             </Form.Group>
           </Row>
 
-          {/* --- BỔ SUNG EMAIL VÀ SDT (Trước CCCD) --- */}
           <Row>
             <Form.Group className="position-relative mb-3">
               <Form.Label>Số điện thoại</Form.Label>
@@ -224,7 +223,6 @@ const FormS = ({ data, close }) => {
               />
             </Form.Group>
           </Row>
-          {/* --------------------------------------- */}
 
           <Row>
           <Form.Group className="position-relative mb-3">
@@ -292,6 +290,20 @@ const FormS = ({ data, close }) => {
               />
             </Form.Group>
           </Row>
+
+          {/* --- THÊM PHẦN HIỂN THỊ VAI TRÒ --- */}
+          <Row>
+            <Form.Group className="position-relative mb-3">
+              <Form.Label>Vai trò</Form.Label>
+              <Form.Control name="vaitro"
+                type="text"
+                disabled
+                value={values.vaitro || "Công dân"} // Mặc định là Công dân nếu null
+              />
+            </Form.Group>
+          </Row>
+          {/* ----------------------------------- */}
+
             {values.tamvang!==''?<Row>
           <Form.Group className="position-relative mb-3">
               <Form.Label>Thông tin tạm vắng</Form.Label>
