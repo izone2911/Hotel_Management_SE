@@ -1,5 +1,5 @@
 import express from "express";
-import { _add,_tach } from "../controllers/hohau.js";
+import { _add,_tach } from "../controllers/hokhau.js";
 
 const router = express.Router()
 

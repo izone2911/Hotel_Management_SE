@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import * as formik from 'formik';
@@ -7,12 +7,9 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { IoCloseCircleOutline } from "react-icons/io5";
-import moment from 'moment'
 import './FormS.css'
-import { elements } from "chart.js";
 
-
-const FormTamVang = ({ data, close, handleClickTamVang,setList }) => {
+const FormTamVang = ({ data, close, setList }) => {
 
   const variants = {
     open: { backgroundColor: "rgba(0,0,0,0.6)" },
@@ -27,79 +24,60 @@ const FormTamVang = ({ data, close, handleClickTamVang,setList }) => {
   };
 
   const { Formik } = formik;
-  const checkNgay = (values) =>{
-    let [year,month,day] = values.split('-')
-    let currentdate = new Date()
-    const [cyear,cmonth,cday] = `${currentdate.getFullYear()}-${currentdate.getMonth()+1}-${currentdate.getDate()}`.split('-')
-    if(year<cyear)return true;
-    else if(year === cyear){
-      if(month<cmonth)return true;
-      else if(month === cmonth){
-        if(day>cday)return false; else return true
-      }else return false
-    }else return false
-   
-  }
+
+  // Schema Validation
   const schema = yup.object().shape({
-    idnguoitamvang: yup.number()
-        .typeError('Vui lòng nhập một số')
-        .required('Vui lòng nhập giá trị')
-        .positive('Vui lòng nhập số dương'),
+    idnguoitamvang: yup.string().required("Vui lòng nhập ID người tạm vắng"),
+    
     ngaybatdau: yup.string()
-    .required('Vui lòng nhập năm, tháng, ngày')
-    .matches(
-      /^\d{4}-\d{2}-\d{2}$/,
-      'Ngày tháng năm phải có định dạng yyyy-mm-dd '
-    )
-    .test('valid-date', 'Ngày không hợp lệ', function (value) {
-      if (!value) return true;
-      const [year, month, day] = value.split('-');
-      const isValidDate = !isNaN(Date.parse(`${month}/${day}/${year}`));
-     if(isValidDate){
-      return checkNgay(value)
-     }else return true
-    }),
+      .required('Vui lòng nhập ngày bắt đầu')
+      .matches(/^\d{4}-\d{2}-\d{2}$/, 'Định dạng phải là yyyy-mm-dd')
+      .test('valid-date', 'Ngày không hợp lệ', function (value) {
+        if (!value) return true;
+        const [year, month, day] = value.split('-');
+        return !isNaN(Date.parse(`${month}/${day}/${year}`));
+      }),
+
     ngayketthuc: yup.string()
-    .required('Vui lòng nhập năm, tháng, ngày')
-    .matches(
-      /^\d{4}-\d{2}-\d{2}$/,
-      'Ngày tháng năm phải có định dạng yyyy-mm-dd '
-    )
-    .test('valid-date', 'Ngày không hợp lệ', function (value) {
-      if (!value) return true;
-      const [year, month, day] = value.split('-');
-      const isValidDate = !isNaN(Date.parse(`${month}/${day}/${year}`));
-     if(isValidDate){
-      return checkNgay(value)
-     }else return true
-    }),
-    nguyennhan: yup.string().required('Đây là trường bắt buộc')
+      .required('Vui lòng nhập ngày kết thúc')
+      .matches(/^\d{4}-\d{2}-\d{2}$/, 'Định dạng phải là yyyy-mm-dd')
+      .test('valid-date', 'Ngày không hợp lệ', function (value) {
+        if (!value) return true;
+        const [year, month, day] = value.split('-');
+        return !isNaN(Date.parse(`${month}/${day}/${year}`));
+      })
+      // Quan trọng: Kiểm tra ngày kết thúc phải sau ngày bắt đầu
+      .test('is-after-start', 'Ngày kết thúc phải sau ngày bắt đầu', function (ngayketthuc) {
+        const { ngaybatdau } = this.parent;
+        if (!ngaybatdau || !ngayketthuc) return true; 
+        return new Date(ngayketthuc) >= new Date(ngaybatdau);
+      }),
+
+    nguyennhan: yup.string().required("Vui lòng nhập lý do tạm vắng")
   });
 
-  const onSubmitForm =  async (values) => {
-     if(values.ngaybatdau>values.ngayketthuc){
-      alert("Ngày vắng phải nhổ hơn ngày kết thúc")
-      return
-     }
-     console.log(values);
-     const response = await axios.post('http://localhost:4000/api/tamvang/add',values)
-     console.log(response.data);
-     if(response.data === "Thành công"){
-      console.log("assert")
-      const newData = {...data, trangthai : 'Tạm vắng'}
-      setList(list =>{
-        return list.map((element)=>{
-          if(element===values.idnguoitamvang){
-           
-            return newData
-          }else return element;
-        })
-      })
-      alert(`Tạm vắng thành công cho nhân khẩu có mã ${values.idnguoitamvang}`)
-      close();
-      return;
-      
-     }
+  const onSubmitForm = async (values) => {
+    try {
+        // Gửi API thêm tạm vắng
+        const res = await axios.post("http://localhost:4000/api/tamvang/add", values);
+        if(res.data === "Thành công"){
+            alert("Thêm tạm vắng thành công");
+            close();
+            // Reload lại trang hoặc cập nhật list nếu cần
+            window.location.reload(); 
+        }
+    } catch (err) {
+        console.error(err);
+        alert("Lỗi khi thêm tạm vắng: " + (err.response?.data || err.message));
+    }
+  }
+
+  // Tự động điền ID người đang chọn vào form
+  const initialValues = {
+      idnguoitamvang: data.id || '', 
+      ngaybatdau: '',
+      ngayketthuc: '',
+      nguyennhan: ''
   }
 
   return (
@@ -116,85 +94,67 @@ const FormTamVang = ({ data, close, handleClickTamVang,setList }) => {
       <Formik
         validationSchema={schema}
         onSubmit={onSubmitForm}
-        initialValues={!data ? data : {
-          idnguoitamvang: data.id,
-          ngaybatdau: '',
-          ngayketthuc:'',
-          nguyennhan: ''
-        }}
+        initialValues={initialValues}
       >
       {({ handleSubmit, handleChange, handleBlur, values, touched, errors }) => (
         <Form noValidate onSubmit={handleSubmit} className="w-75 d-flex flex-column justify-content-center">
 
           <Form.Group as='div' className="position-relative mb-5 cf-title-12">
-            <Form.Label className="w-100 text-center h1" >Đơn khai báo tạm vắng</Form.Label>
+            <Form.Label className="w-100 text-center h1" >Đăng ký tạm vắng</Form.Label>
+            <Form.Text className="text-muted w-100 text-center d-block">
+                Cho nhân khẩu: <b>{data.hoten}</b> (ID: {data.id})
+            </Form.Text>
           </Form.Group>
 
+          {/* ID Người tạm vắng (Ẩn hoặc Disable vì đã lấy từ data) */}
           <Row>
             <Form.Group className="position-relative mb-3">
-              <Form.Label>Họ và tên</Form.Label>
-
-              <Form.Control name="hotennguoitamvang"
+              <Form.Label>Mã nhân khẩu</Form.Label>
+              <Form.Control name="idnguoitamvang"
                 type="text"
                 disabled
-                value={data.hoten}
+                value={values.idnguoitamvang}
               />
             </Form.Group>
           </Row>
 
           <Row>
-            <Form.Group className="position-relative mb-3">
-              <Form.Label>id người đăng kí tạm vắng</Form.Label>
-
-              <Form.Control name="hotennguoitamvang"
-                type="text"
-                disabled
-                value={data.id}
-              />
-            </Form.Group>
+            <Col>
+              <Form.Group className="position-relative mb-3">
+                <Form.Label>Ngày bắt đầu (yyyy-mm-dd)</Form.Label>
+                <Form.Control name="ngaybatdau"
+                  required
+                  type="text"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.ngaybatdau}
+                  isValid={touched.ngaybatdau && !errors.ngaybatdau}
+                  isInvalid={touched.ngaybatdau && !!errors.ngaybatdau}
+                />
+                <Form.Control.Feedback className="top-0 end-0" type="invalid" tooltip>{errors.ngaybatdau}</Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+            
+            <Col>
+              <Form.Group className="position-relative mb-3">
+                <Form.Label>Ngày kết thúc (yyyy-mm-dd)</Form.Label>
+                <Form.Control name="ngayketthuc"
+                  required
+                  type="text"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.ngayketthuc}
+                  isValid={touched.ngayketthuc && !errors.ngayketthuc}
+                  isInvalid={touched.ngayketthuc && !!errors.ngayketthuc}
+                />
+                <Form.Control.Feedback className="top-0 end-0" type="invalid" tooltip>{errors.ngayketthuc}</Form.Control.Feedback>
+              </Form.Group>
+            </Col>
           </Row>
 
           <Row>
             <Form.Group className="position-relative mb-3">
-              <Form.Label>Vắng mặt từ</Form.Label>
-
-              <Form.Control name="ngaybatdau"
-                required
-                type="text"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.ngaybatdau}
-                isValid={touched.ngaybatdau && !errors.ngaybatdau}
-                isInvalid={touched.ngaybatdau && !!errors.ngaybatdau}
-              />
-
-              <Form.Control.Feedback className="top-0 end-0" type="valid" tooltip>Good!</Form.Control.Feedback>
-              <Form.Control.Feedback className="top-0 end-0" type="invalid" tooltip>{errors.ngaybatdau}</Form.Control.Feedback>
-            </Form.Group>
-          </Row>
-
-          <Row>
-            <Form.Group className="position-relative mb-3">
-              <Form.Label>Đến ngày</Form.Label>
-
-              <Form.Control name="ngayketthuc"
-                required
-                type="text"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.ngayketthuc}
-                isValid={touched.ngayketthuc && !errors.ngayketthuc}
-                isInvalid={touched.ngayketthuc && !!errors.ngayketthuc}
-              />
-
-              <Form.Control.Feedback className="top-0 end-0" type="valid" tooltip>Good!</Form.Control.Feedback>
-              <Form.Control.Feedback className="top-0 end-0" type="invalid" tooltip>{errors.ngayketthuc}</Form.Control.Feedback>
-            </Form.Group>
-          </Row>
-          <Row>
-            <Form.Group className="position-relative mb-3">
-              <Form.Label>Lý do vắng mặt</Form.Label>
-
+              <Form.Label>Lý do tạm vắng</Form.Label>
               <Form.Control name="nguyennhan"
                 required
                 type="text"
@@ -204,14 +164,12 @@ const FormTamVang = ({ data, close, handleClickTamVang,setList }) => {
                 isValid={touched.nguyennhan && !errors.nguyennhan}
                 isInvalid={touched.nguyennhan && !!errors.nguyennhan}
               />
-
-              <Form.Control.Feedback className="top-0 end-0" type="valid" tooltip>Good!</Form.Control.Feedback>
               <Form.Control.Feedback className="top-0 end-0" type="invalid" tooltip>{errors.nguyennhan}</Form.Control.Feedback>
             </Form.Group>
           </Row>
         
           <Form.Group className="position-relative mt-5 w-100 d-flex justify-content-center">
-            <button className="button-89" type="submit" onClick={handleSubmit}>Submit</button>
+            <button className="button-89" type="submit" onClick={handleSubmit}>Xác nhận</button>
           </Form.Group>
 
         </Form>
