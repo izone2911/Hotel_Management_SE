@@ -1,8 +1,16 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } 
   from "react-router-dom";
 //---------------------------------------------------------
-import { TamTru, Dashboard, NhanKhau, KhoanThu, NopTien, Login, Account, SendFile }  
-  from './pages';
+import { 
+  // TamTru, 
+  // Dashboard, 
+  NhanKhau, 
+  // KhoanThu, 
+  // NopTien, 
+  // Login, 
+  // Account, 
+  // SendFile 
+} from './pages';
 
 import Navbar from './component/navbar/Navbar'
 
@@ -13,15 +21,19 @@ function App() {
     <Router>
       <Navbar/>
       <Routes>
-        <Route path="/" element={<Navigate replace to="/dashboard" />} />
-        <Route path="/login"  exact element={<Login />}  />
-        <Route path="/account" exact element={<Account />} />
-        <Route path="/khoanthu" exact element={<KhoanThu />} />
-        <Route path="/noptien"  exact element={<NopTien />}  />
+        <Route path="/" element={<Navigate replace to="/hokhau" />} />
+        {/* <Route path="/" element={<Navigate replace to="/dashboard" />} /> */}
+        
+        {/* <Route path="/login"  exact element={<Login />}  /> */}
+        {/* <Route path="/account" exact element={<Account />} /> */}
+        {/* <Route path="/khoanthu" exact element={<KhoanThu />} /> */}
+        {/* <Route path="/noptien"  exact element={<NopTien />}  /> */}
+        
         <Route path="/hokhau" exact element={<NhanKhau />} />
-        <Route path="/tamtru" exact element={<TamTru />} />
-        <Route path="/dashboard" exact element={<Dashboard />} /> 
-        <Route path="/sendfile" exact element={<SendFile />} />
+        
+        {/* <Route path="/tamtru" exact element={<TamTru />} /> */}
+        {/* <Route path="/dashboard" exact element={<Dashboard />} />  */}
+        {/* <Route path="/sendfile" exact element={<SendFile />} /> */}
       </Routes>
     </Router>
     

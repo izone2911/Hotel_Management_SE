@@ -12,8 +12,8 @@ app.use(cors())
 //import noptienRoutes from './routes/noptien.js';
 //app.use("/api/noptien", noptienRoutes)
 //
-//import authRoutes from "./routes/auth.js";
-//app.use("/api/auth", authRoutes);
+import authRoutes from "./routes/auth.js";
+app.use("/api/auth", authRoutes);
 //
 //import userRoutes from "./routes/users.js";
 //app.use("/api/users", userRoutes);
