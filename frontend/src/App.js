@@ -2,14 +2,13 @@ import { BrowserRouter as Router, Routes, Route, Navigate }
   from "react-router-dom";
 //---------------------------------------------------------
 import { 
-  // TamTru, 
+  TamTru, 
   // Dashboard, 
   NhanKhau, 
   // KhoanThu, 
   // NopTien, 
   // Login, 
   // Account, 
-  // SendFile 
 } from './pages';
 
 import Navbar from './component/navbar/Navbar'
@@ -31,9 +30,8 @@ function App() {
         
         <Route path="/hokhau" exact element={<NhanKhau />} />
         
-        {/* <Route path="/tamtru" exact element={<TamTru />} /> */}
+        <Route path="/tamtru" exact element={<TamTru />} />
         {/* <Route path="/dashboard" exact element={<Dashboard />} />  */}
-        {/* <Route path="/sendfile" exact element={<SendFile />} /> */}
       </Routes>
     </Router>
     
