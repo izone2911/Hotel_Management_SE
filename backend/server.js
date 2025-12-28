@@ -9,9 +9,9 @@ app.use(cors())
 //import khoanthuRoutes from './routes/khoanthu.js';
 //app.use("/api/khoanthu", khoanthuRoutes);
 // 
-//import noptienRoutes from './routes/noptien.js';
-//app.use("/api/noptien", noptienRoutes)
-//
+import noptienRoutes from './routes/noptien.js';
+app.use("/api/noptien", noptienRoutes)
+
 import authRoutes from "./routes/auth.js";
 app.use("/api/auth", authRoutes);
 //
@@ -26,10 +26,10 @@ import tamvangRoutes from './routes/tamvang.js'
 //import tamtruRoutes from './routes/tamtru.js'
 //import thongkeRoutes from './routes/thongke.js'
 
-app.use("/api/nhankhau",nhankhauRoutes)
-app.use("/api/hokhau",hokhauRoutes)
+app.use("/api/nhankhau", nhankhauRoutes)
+app.use("/api/hokhau", hokhauRoutes)
 app.use("/api/khaitu", khaituRoutes)
-app.use('/api/tamvang',tamvangRoutes)
+app.use('/api/tamvang', tamvangRoutes)
 //app.use("/api/tamtru",tamtruRoutes)
 //app.use('/api/thongke', thongkeRoutes)
 
