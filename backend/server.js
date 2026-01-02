@@ -25,10 +25,10 @@ import tamvangRoutes from "./routes/tamvang.js";
 //import tamtruRoutes from './routes/tamtru.js'
 //import thongkeRoutes from './routes/thongke.js'
 
-app.use("/api/nhankhau", nhankhauRoutes);
-app.use("/api/hokhau", hokhauRoutes);
-app.use("/api/khaitu", khaituRoutes);
-app.use("/api/tamvang", tamvangRoutes);
+app.use("/api/nhankhau", nhankhauRoutes)
+app.use("/api/hokhau", hokhauRoutes)
+app.use("/api/khaitu", khaituRoutes)
+app.use('/api/tamvang', tamvangRoutes)
 //app.use("/api/tamtru",tamtruRoutes)
 //app.use('/api/thongke', thongkeRoutes)
 
