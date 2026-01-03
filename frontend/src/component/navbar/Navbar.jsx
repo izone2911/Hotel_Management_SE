@@ -95,9 +95,9 @@ const Navbar = () => {
             {/* Đã xóa SendFile và các tab rác khác */}
             
             {/* Nếu muốn mở rộng sau này thì bỏ comment đoạn dưới */}
-            {/* <TagLink className="fas fa-address-card" to='/tamtru' text='Tạm trú' />
-             <TagLink className="fas fa-money-bill" to='/khoanthu' text='Khoản thu' /> 
-            */}
+            <TagLink className="fas fa-address-card" to='/tamtru' text='Tạm trú' />
+            <TagLink className="fas fa-money-bill" to='/khoanthu' text='Khoản thu' /> 
+           
 
             {/* Giữ khoảng cách layout */}
             <span style={{width: '50%', marginRight: '-200px'}}></span>
