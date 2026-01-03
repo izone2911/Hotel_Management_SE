@@ -6,6 +6,7 @@ import './dependencies/fontawesome/css/all.css';
 import './Navbar.css';
 
 import { AuthContext } from "../../context/authContext";
+import Diversity2Icon from '@mui/icons-material/Diversity2';
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 
 const Navbar = () => {
@@ -14,10 +15,10 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login'); 
+    navigate('/login'); // Redirect to "/" after logout
   };
   
-  // --- Giữ nguyên hiệu ứng Animation ---
+  // UI effect
   function animation(){
     var tabsNewAnim = $('#navbarSupportedContent');
     var activeItemNewAnim = tabsNewAnim.find('.active');
@@ -55,18 +56,14 @@ const Navbar = () => {
   }, []);
 
   const itemRef = useRef(null)  
-  // Tự động click vào tab đầu tiên khi load
-  useEffect(() => {
-    if(itemRef.current) itemRef.current.click()
-  }, [currentUser])
-
+  useEffect(() => {itemRef.current.click()}, [currentUser])
+  // const id = currentUser.UserId;
   return (
     <nav className="navbar navbar-expand-lg navbar-mainbg">
 
-      {/* 1. SỬA TÊN LOGO */}
       <NavLink className="navbar-brand navbar-logo" to="/" exact="true">
         <AcUnitIcon style={{marginRight: 10, marginTop: -4}}/>
-        Hotel Management
+        Blue Moon
       </NavLink>
     
       <button 
@@ -83,26 +80,38 @@ const Navbar = () => {
               <div className="left"></div>
               <div className="right"></div>
             </div>
-
-            {/* 2. SỬA TAB DASHBOARD THÀNH QUẢN LÝ NHÂN KHẨU */}
-            {/* Link trỏ về /hokhau để khớp với App.js */}
             <li className="nav-item active" ref={itemRef}>
-              <NavLink className="nav-link" to="/hokhau" exact="true" style={{fontFamily: 'sans-serif'}}>
-                <i className="fas fa-users"></i>Nhân khẩu
+              <NavLink className="nav-link" to="/dashboard" exact="true" style={{fontFamily: 'sans-serif'}}>
+                <i className="fas fa-tachometer-alt_tmp"></i>Dashboard 
+                {/* remove _tmp to get icon */}
               </NavLink> 
             </li>
             
-            {/* Đã xóa SendFile và các tab rác khác */}
-            
-            {/* Nếu muốn mở rộng sau này thì bỏ comment đoạn dưới */}
-            <TagLink className="fas fa-address-card" to='/tamtru' text='Tạm trú' />
-            <TagLink className="fas fa-money-bill" to='/khoanthu' text='Khoản thu' /> 
-           
+            { [0,1].includes(currentUser?.RoleId) ?<>
+            <TagLink className="fas fa-blog_tmp" to='/hokhau' text='Hộ khẩu' />
+            <TagLink className="fas fa-blog_tmp" to='/tamtru' text='Tạm trú' /></>
+            : null }
+            { [0,1].includes(currentUser?.RoleId) ? <>
+            <TagLink className="fas fa-blog_tmp" to='/khoanthu' text='Khoản thu' />
+            <TagLink className="fas fa-blog_tmp" to='/noptien' text='Nộp tiền' />
+            </> : null }
 
-            {/* Giữ khoảng cách layout */}
-            <span style={{width: '50%', marginRight: '-200px'}}></span>
+            {/* <span style={{width: '50%', 
+              marginRight: !currentUser ? '-150px' : 
+                           currentUser?.RoleId === 0 ? '-200px' :'-250px'
+            }}></span> */}
+
+            
+
+            { currentUser?.RoleId === 0 ? 
+            <TagLink className="fas fa-users_tmp" to='/account' text='Tài khoản' />
+            : null }
+
+            <span style={{width: '50%', 
+              marginRight: !currentUser ? '-240px' : 
+                           currentUser?.RoleId === 0 ? '-360px' : '-380px'
+            }}></span>
       
-            {/* Nút Đăng nhập / Đăng xuất */}
             { currentUser ?
             <TagLink onClick={handleLogout} className="fas fa-sign-out-alt" to='/' text='Đăng xuất' /> :
             <TagLink className="fas fa-sign-in-alt" to='/login' text='Đăng nhập' /> }
@@ -113,7 +122,6 @@ const Navbar = () => {
 }
 export default Navbar;
 
-// Component con để render các link phụ (nếu cần dùng sau này)
 const TagLink = ({className, to, onClick = ()=>{}, text}) => (
   <li className="nav-item">
     <NavLink onClick={onClick} className="nav-link" to={to} exact="true" style={{fontFamily: 'sans-serif'}}>

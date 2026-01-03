@@ -8,7 +8,7 @@ import {
   KhoanThu, 
   NopTien,
   Login, 
-  // Account, 
+  Account, 
 } from './pages';
 
 import Navbar from './component/navbar/Navbar'
@@ -24,7 +24,7 @@ function App() {
         {/* <Route path="/" element={<Navigate replace to="/dashboard" />} /> */}
 
         <Route path="/login"  exact element={<Login />}  />
-        {/* <Route path="/account" exact element={<Account />} /> */}
+        <Route path="/account" exact element={<Account />} />
         <Route path="/khoanthu" exact element={<KhoanThu />} />
         <Route path="/noptien" exact element={<NopTien />} />
 
