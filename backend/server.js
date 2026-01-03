@@ -14,8 +14,8 @@ app.use("/api/noptien", noptienRoutes);
 import authRoutes from "./routes/auth.js";
 app.use("/api/auth", authRoutes);
 //
-//import userRoutes from "./routes/users.js";
-//app.use("/api/users", userRoutes);
+import userRoutes from "./routes/users.js";
+app.use("/api/users", userRoutes);
 //
 
 import nhankhauRoutes from "./routes/nhankhau.js";

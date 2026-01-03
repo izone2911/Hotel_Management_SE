@@ -5,9 +5,9 @@ import {
   TamTru,
   // Dashboard, 
   NhanKhau,
-  // KhoanThu, 
+  KhoanThu, 
   NopTien,
-  // Login, 
+  Login, 
   // Account, 
 } from './pages';
 
@@ -23,9 +23,9 @@ function App() {
         <Route path="/" element={<Navigate replace to="/hokhau" />} />
         {/* <Route path="/" element={<Navigate replace to="/dashboard" />} /> */}
 
-        {/* <Route path="/login"  exact element={<Login />}  /> */}
+        <Route path="/login"  exact element={<Login />}  />
         {/* <Route path="/account" exact element={<Account />} /> */}
-        {/* <Route path="/khoanthu" exact element={<KhoanThu />} /> */}
+        <Route path="/khoanthu" exact element={<KhoanThu />} />
         <Route path="/noptien" exact element={<NopTien />} />
 
         <Route path="/hokhau" exact element={<NhanKhau />} />
