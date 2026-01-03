@@ -63,7 +63,7 @@ const Navbar = () => {
 
       <NavLink className="navbar-brand navbar-logo" to="/" exact="true">
         <AcUnitIcon style={{marginRight: 10, marginTop: -4}}/>
-        Hotel Management
+        Blue Moon
       </NavLink>
     
       <button 
