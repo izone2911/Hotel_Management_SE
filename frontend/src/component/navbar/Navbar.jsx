@@ -96,13 +96,6 @@ const Navbar = () => {
             <TagLink className="fas fa-blog_tmp" to='/noptien' text='Nộp tiền' />
             </> : null }
 
-            {/* <span style={{width: '50%', 
-              marginRight: !currentUser ? '-150px' : 
-                           currentUser?.RoleId === 0 ? '-200px' :'-250px'
-            }}></span> */}
-
-            
-
             { currentUser?.RoleId === 0 ? 
             <TagLink className="fas fa-users_tmp" to='/account' text='Tài khoản' />
             : null }

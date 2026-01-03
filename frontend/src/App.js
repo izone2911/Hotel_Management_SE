@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate }
 //---------------------------------------------------------
 import {
   TamTru,
-  // Dashboard, 
+  Dashboard, 
   NhanKhau,
   KhoanThu, 
   NopTien,
@@ -20,18 +20,14 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Navigate replace to="/hokhau" />} />
-        {/* <Route path="/" element={<Navigate replace to="/dashboard" />} /> */}
-
+        <Route path="/" element={<Navigate replace to="/dashboard" />} />
+        <Route path="/dashboard" exact element={<Dashboard />} />
         <Route path="/login"  exact element={<Login />}  />
         <Route path="/account" exact element={<Account />} />
         <Route path="/khoanthu" exact element={<KhoanThu />} />
         <Route path="/noptien" exact element={<NopTien />} />
-
         <Route path="/hokhau" exact element={<NhanKhau />} />
-
         <Route path="/tamtru" exact element={<TamTru />} />
-        {/* <Route path="/dashboard" exact element={<Dashboard />} />  */}
       </Routes>
     </Router>
 
